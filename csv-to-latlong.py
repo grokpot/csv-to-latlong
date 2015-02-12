@@ -56,8 +56,8 @@ def main(argv):
 
             with open('output.csv', 'w') as output_file:
                 csv_writer = csv.writer(output_file)
-                header_row = ['address1'] if address1 else []
-                header_row += ['city', 'state', 'latitude', 'longitude']
+                header_row = ['Address'] if address1 else []
+                header_row += ['City', 'State', 'Latitude', 'Longitude']
                 csv_writer.writerow(header_row)
                 n = 0
                 for i, row in enumerate(reader):
@@ -67,10 +67,12 @@ def main(argv):
                     query_string += ', ' + row[city_col] + ', ' + row[state_col]
                     location = geolocator.geocode(query_string)
                     time.sleep(0.15)    # Google lookup limits: 2,500 requests / 24 hours, 5 requests / 1 sec
-                    print 'lat: ' + str(location.latitude) + ', long: ' + str(location.longitude)
                     output_row = [row[address1]] if address1 else []
                     output_row += [row[city_col], row[state_col], location.latitude, location.longitude]
                     csv_writer.writerow(output_row)
+
+            print "Done. Check output.csv for results."
+
     except Exception as e:
         print "Uh-oh. You messed something up. Here's a hint:"
         print e
